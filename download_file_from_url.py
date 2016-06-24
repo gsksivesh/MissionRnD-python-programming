@@ -1,6 +1,9 @@
 import urllib2
 import click
-
+# This is the program to download a file when a url is given.
+# This is my initial step to dowload a file in multiple parts.
+# I'm downloading 4kb chunk at a time. Because it's considered to be the block size.
+# Initially I'm checking for test cases too
 
 @click.command()
 @click.option('--url', prompt='Enter URL',
