@@ -11,3 +11,7 @@ word1: – act word2: – cot
 the output is: –
 
 act->aft->oft->oat->cat->cot
+
+# download from url
+
+This is the inital step for me to download a file in multiple parts and combine them finally. this program just dowloads the files
