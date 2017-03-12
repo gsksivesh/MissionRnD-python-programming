@@ -2,6 +2,11 @@ import functools
 import time
 
 
+class MutableInt(object):
+    def __init__(self, value):
+        self.value = value
+
+
 class MutableBoolean(object):
     def __init__(self, value=True):
         self.value = value
@@ -22,7 +27,7 @@ def profile_count(skip_recursion=True):
             def operating_function_count(*args, **kwargs):
                 if top_call:  # top_call tells us whether it is a top call(True) or recursive call(False)
                     top_call.value = False
-                    operating_function_count.count += 1
+                    operating_function_count.count.value += 1
                     return_value = func(*args, **kwargs)
                     top_call.value = True
                     return return_value
@@ -30,10 +35,10 @@ def profile_count(skip_recursion=True):
         else:
             @functools.wraps(func)
             def operating_function_count(*args, **kwargs):
-                operating_function_count.count += 1
+                operating_function_count.count.value += 1
                 return func(*args, **kwargs)
 
-        operating_function_count.count = 0
+        operating_function_count.count = MutableInt(0)
         return operating_function_count
 
     return log_function_count
@@ -50,11 +55,11 @@ def profile_time(func):
             return_value = func(*args, **kwargs)
             after_time = time.clock()
             top_call.value = True
-            operating_function_time.time_elapsed += after_time - before_time
+            operating_function_time.time_elapsed.value += after_time - before_time
             return return_value
         return func(*args, **kwargs)
 
-    operating_function_time.time_elapsed = 0
+    operating_function_time.time_elapsed = MutableInt(0)
     return operating_function_time
 
 
@@ -68,14 +73,14 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount recursion=false")
+print ("\ncount skip_recursion=false")
 
 fib(5)
-print (fib.count)
+print (fib.count.value)
 fib(5)
-print (fib.count)
+print (fib.count.value)
 fib(5)
-print (fib.count)
+print (fib.count.value)
 
 
 @profile_count(True)
@@ -88,14 +93,14 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount recursion=true")
+print ("\ncount skip_recursion=true")
 
 fib(5)
-print (fib.count)
+print (fib.count.value)
 fib(5)
-print (fib.count)
+print (fib.count.value)
 fib(5)
-print (fib.count)
+print (fib.count.value)
 
 
 @profile_time
@@ -111,11 +116,11 @@ def fib(n):
 print ("\ntime")
 
 fib(5)
-print (fib.time_elapsed * 10000)
+print (fib.time_elapsed.value * 10000)
 fib(5)
-print (fib.time_elapsed * 10000)
+print (fib.time_elapsed.value * 10000)
 fib(5)
-print (fib.time_elapsed * 10000)
+print (fib.time_elapsed.value * 10000)
 
 
 @profile_count(False)
@@ -129,17 +134,17 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount recursion=false and time")
+print ("\ncount skip_recursion=false and time")
 
 fib(5)
-print (fib.time_elapsed * 10000)
-print (fib.count)
+print (fib.time_elapsed.value * 10000)
+print (fib.count.value)
 fib(5)
-print (fib.time_elapsed * 10000)
-print (fib.count)
+print (fib.time_elapsed.value * 10000)
+print (fib.count.value)
 fib(5)
-print (fib.time_elapsed * 10000)
-print (fib.count)
+print (fib.time_elapsed.value * 10000)
+print (fib.count.value)
 
 
 @profile_count(True)
@@ -153,14 +158,14 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount recursion=true and time")
+print ("\ncount skip_recursion=true and time")
 
 fib(5)
-print (fib.time_elapsed * 10000)
-print (fib.count)
+print (fib.time_elapsed.value * 10000)
+print (fib.count.value)
 fib(5)
-print (fib.time_elapsed * 10000)
-print (fib.count)
+print (fib.time_elapsed.value * 10000)
+print (fib.count.value)
 fib(5)
-print (fib.time_elapsed * 10000)
-print (fib.count)
+print (fib.time_elapsed.value * 10000)
+print (fib.count.value)
