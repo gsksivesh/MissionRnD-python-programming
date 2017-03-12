@@ -64,7 +64,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount recursion=false")
+print ("\ncount skip_recursion=false")
 
 fib(5)
 print (fib.count)
@@ -84,7 +84,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount recursion=true")
+print ("\ncount skip_recursion=true")
 
 fib(5)
 print (fib.count)
@@ -125,7 +125,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount recursion=false and time")
+print ("\ncount skip_recursion=false and time")
 
 fib(5)
 print (fib.time_elapsed * 10000)
@@ -149,7 +149,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount recursion=true and time")
+print ("\ncount skip_recursion=true and time")
 
 fib(5)
 print (fib.time_elapsed * 10000)
