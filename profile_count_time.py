@@ -1,3 +1,4 @@
+import functools
 import time
 
 
@@ -17,6 +18,7 @@ def profile_count(skip_recursion=True):
         if skip_recursion:
             top_call = MutableBoolean()  # mutable because it must be changed in the inner function
 
+            @functools.wraps(func)
             def operating_function_count(*args, **kwargs):
                 if top_call:  # top_call tells us whether it is a top call(True) or recursive call(False)
                     top_call.value = False
@@ -26,6 +28,7 @@ def profile_count(skip_recursion=True):
                     return return_value
                 return func(*args, **kwargs)
         else:
+            @functools.wraps(func)
             def operating_function_count(*args, **kwargs):
                 operating_function_count.count += 1
                 return func(*args, **kwargs)
@@ -39,6 +42,7 @@ def profile_count(skip_recursion=True):
 def profile_time(func):
     top_call = MutableBoolean()
 
+    @functools.wraps(func)
     def operating_function_time(*args, **kwargs):
         if top_call:
             top_call.value = False
@@ -64,7 +68,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount skip_recursion=false")
+print ("\ncount recursion=false")
 
 fib(5)
 print (fib.count)
@@ -84,7 +88,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount skip_recursion=true")
+print ("\ncount recursion=true")
 
 fib(5)
 print (fib.count)
@@ -125,7 +129,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount skip_recursion=false and time")
+print ("\ncount recursion=false and time")
 
 fib(5)
 print (fib.time_elapsed * 10000)
@@ -149,7 +153,7 @@ def fib(n):
     return fib(n - 1) + fib(n - 2)
 
 
-print ("\ncount skip_recursion=true and time")
+print ("\ncount recursion=true and time")
 
 fib(5)
 print (fib.time_elapsed * 10000)
