@@ -1,4 +1,6 @@
+import functools
 import time
+
 
 class MutableBoolean(object):
     def __init__(self, value=True):
@@ -16,6 +18,7 @@ def profile_count(skip_recursion=True):
         if skip_recursion:
             top_call = MutableBoolean()  # mutable because it must be changed in the inner function
 
+            @functools.wraps(func)
             def operating_function_count(*args, **kwargs):
                 if top_call:  # top_call tells us whether it is a top call(True) or recursive call(False)
                     top_call.value = False
@@ -25,6 +28,7 @@ def profile_count(skip_recursion=True):
                     return return_value
                 return func(*args, **kwargs)
         else:
+            @functools.wraps(func)
             def operating_function_count(*args, **kwargs):
                 operating_function_count.count += 1
                 return func(*args, **kwargs)
@@ -37,7 +41,8 @@ def profile_count(skip_recursion=True):
 
 def profile_time(func):
     top_call = MutableBoolean()
-    
+
+    @functools.wraps(func)
     def operating_function_time(*args, **kwargs):
         if top_call:
             top_call.value = False
@@ -51,7 +56,6 @@ def profile_time(func):
 
     operating_function_time.time_elapsed = 0
     return operating_function_time
-
 
 
 @profile_count(False)
